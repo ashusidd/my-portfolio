@@ -499,6 +499,35 @@ body {
   cursor: pointer;
 }
 
+/* 🌑 DARK MODE SPECIFIC TWEAKS */
+.dark-theme .social-group a {
+  color: #a5b4fc;
+  /* Light Indigo - very clear on dark backgrounds */
+  background: rgba(255, 255, 255, 0.05);
+  /* Subtle box so it looks like a button */
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(165, 180, 252, 0.2);
+  /* Soft border */
+}
+
+.dark-theme .social-group a:hover {
+  background: rgba(165, 180, 252, 0.15);
+  color: #ffffff;
+  border-color: #a5b4fc;
+}
+
+.dark-theme .admin-edit-btn {
+  color: #a5b4fc;
+  border-color: #a5b4fc;
+}
+
+/* Make the Download CV button extra bright in Dark Mode */
+.dark-theme .cv-btn {
+  background: #6366f1;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
 /* 10. RESPONSIVE MOBILE - REWRITTEN FOR ASHU */
 @media (max-width: 768px) {
   .dashboard-container {
