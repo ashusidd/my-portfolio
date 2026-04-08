@@ -18,18 +18,7 @@ function App() {
     return localStorage.getItem('is-ashu-admin') === 'true';
   });
 
-  // --- 3. PROFILE DATA (CV & Socials) ---
-  const [profileData, setProfileData] = useState(() => {
-    const saved = localStorage.getItem('ashu-profile-data');
-    return saved ? JSON.parse(saved) : {
-      cvLink: "#",
-      linkedin: "https://linkedin.com/in/ashrafali",
-      instagram: "https://instagram.com/er_ashuuu",
-      github: "https://github.com/ashusidd"
-    };
-  });
-
-  // --- 4. PROJECTS STATE ---
+  // --- 3. PROJECTS STATE ---
   const [projects, setProjects] = useState(() => {
     const saved = localStorage.getItem('my-dashboard-projects');
     return saved ? JSON.parse(saved) : [
@@ -59,7 +48,7 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // --- 5. PERSISTENCE ---
+  // --- 4. PERSISTENCE (Only for Projects and Messages) ---
   useEffect(() => {
     localStorage.setItem('my-dashboard-projects', JSON.stringify(projects));
   }, [projects]);
@@ -68,12 +57,7 @@ function App() {
     localStorage.setItem('portfolio-messages', JSON.stringify(messages));
   }, [messages]);
 
-  useEffect(() => {
-    localStorage.setItem('ashu-profile-data', JSON.stringify(profileData));
-  }, [profileData]);
-
-  // --- 6. ACTION HANDLERS ---
-
+  // --- 5. ACTION HANDLERS ---
   const handleAdminUnlock = () => {
     if (isAdmin) {
       setIsAdmin(false);
@@ -88,25 +72,6 @@ function App() {
       } else {
         alert("Wrong Key!");
       }
-    }
-  };
-
-  // 🛠️ Admin function to update CV and Socials
-  const handleUpdateProfile = () => {
-    const cv = prompt("Enter CV Drive Link:", profileData.cvLink);
-    const li = prompt("Enter LinkedIn URL:", profileData.linkedin);
-    const ig = prompt("Enter Instagram URL:", profileData.instagram);
-    const gh = prompt("Enter GitHub URL:", profileData.github);
-
-    if (cv && li && ig && gh) {
-      setProfileData({
-        ...profileData,
-        cvLink: cv,
-        linkedin: li,
-        instagram: ig,
-        github: gh
-      });
-      alert("Profile links updated!");
     }
   };
 
@@ -155,32 +120,27 @@ function App() {
               <StatCard label="Role" value={isAdmin ? "Admin" : "Visitor"} iconColor="#f59e0b" />
             </section>
 
-            {/* CV & SOCIALS SECTION */}
+            {/* CV & SOCIALS SECTION - DIRECTLY IN CODE */}
             <div className="profile-card card glass-card">
               <h3>Connect & Resume</h3>
               <div className="profile-actions">
                 <div className="visitor-links">
-                  <a href={profileData.cvLink} target="_blank" rel="noreferrer" className="cv-btn">
+                  {/* 🔗 Replace '#' with your Google Drive Link */}
+                  <a href="#" target="_blank" rel="noreferrer" className="cv-btn">
                     📥 Download CV
                   </a>
                   <div className="social-group">
-                    <a href={profileData.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-                    <a href={profileData.instagram} target="_blank" rel="noreferrer">Instagram</a>
-                    <a href={profileData.github} target="_blank" rel="noreferrer">GitHub</a>
+                    <a href="https://linkedin.com/in/ashrafali" target="_blank" rel="noreferrer">LinkedIn</a>
+                    <a href="https://instagram.com/er_ashuuu" target="_blank" rel="noreferrer">Instagram</a>
+                    <a href="https://github.com/ashusidd" target="_blank" rel="noreferrer">GitHub</a>
                   </div>
                 </div>
-
-                {isAdmin && (
-                  <button onClick={handleUpdateProfile} className="admin-edit-btn">
-                    ⚙️ Edit Links
-                  </button>
-                )}
               </div>
             </div>
           </div>
         )}
 
-        {/* --- OTHER TABS REMAIN THE SAME --- */}
+        {/* --- OTHER TABS --- */}
         {activeTab === "Projects" && (
           <>
             {isAdmin && <AddProject onAdd={addProject} />}

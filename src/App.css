@@ -483,11 +483,15 @@ body {
   font-size: 0.9rem;
   font-weight: 500;
   opacity: 0.7;
+  align-items: center;
+  display: flex;
+  transition: all 0.3s ease;
 }
 
 .social-group a:hover {
   opacity: 1;
   color: #4f46e5;
+  transform: scale(1.1);
 }
 
 .admin-edit-btn {
@@ -630,5 +634,17 @@ body {
   .cv-btn {
     width: 100%;
     text-align: center;
+  }
+
+  .social-group {
+    width: 100%;
+    justify-content: space-between;
+    /* 🚀 Spreads links out on mobile */
+    margin-top: 15px;
+  }
+
+  .profile-card {
+    padding: 20px;
+    /* More room for content */
   }
 }
