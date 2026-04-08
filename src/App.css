@@ -435,22 +435,98 @@ body {
   color: white;
 }
 
-/* 10. RESPONSIVE MOBILE */
+/* 10. RESPONSIVE MOBILE - REWRITTEN FOR ASHU */
 @media (max-width: 768px) {
+
+  /* 📱 Make the container stack vertically */
   .dashboard-container {
     flex-direction: column;
+    height: auto;
+    min-height: 100vh;
     overflow-y: auto;
   }
 
+  /* 🧭 Turn Sidebar into a Top Navbar */
   .sidebar {
     width: 100%;
     height: auto;
-    position: static;
+    padding: 15px 20px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   }
 
+  .sidebar h2 {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+  }
+
+  .sidebar ul {
+    display: flex;
+    gap: 10px;
+  }
+
+  .menu-item {
+    margin-bottom: 0;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* 🕵️‍♂️ Hide Admin Text on Mobile to save space */
+  .admin-trigger {
+    display: none;
+  }
+
+  /* 📄 Adjust Content Padding */
   .content {
-    height: auto;
-    overflow-y: visible;
     padding: 20px;
+    height: auto;
+  }
+
+  .content-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .header-controls {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  /* 📊 Stack the Stats Cards */
+  .stats-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .stat-card {
+    padding: 15px;
+  }
+
+  /* 🏗️ Single Column Project Grid */
+  .project-grid {
+    grid-template-columns: 1fr;
+    /* One card per row */
+  }
+
+  /* 📝 Form Adjustments for small screens */
+  .contact-form,
+  .add-project-form {
+    padding: 25px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .contact-form h2 {
+    font-size: 1.4rem;
   }
 }
