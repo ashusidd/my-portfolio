@@ -126,7 +126,7 @@ function App() {
               <div className="profile-actions">
                 <div className="visitor-links">
                   {/* 🔗 Replace '#' with your Google Drive Link */}
-                  <a href="#" target="_blank" rel="noreferrer" className="cv-btn">
+                  <a href="https://drive.google.com/file/d/1_dkUCa37ck7h4sQ376RK816F10-ZGFvp/view?usp=drive_link" target="_blank" rel="noreferrer" className="cv-btn">
                     📥 Download CV
                   </a>
                   <div className="social-group">
