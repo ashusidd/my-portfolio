@@ -1,46 +1,44 @@
 // src/components/ContactForm.jsx
-import { useState } from 'react';
+import React from 'react';
 
-function ContactForm({ onSendMessage }) {
-    const [formData, setFormData] = useState({ name: '', email: '', text: '' });
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        // 🚀 We pass a COPY of the data to ensure App.jsx receives it perfectly
-        onSendMessage({ ...formData });
-
-        // Clear form
-        setFormData({ name: '', email: '', text: '' });
-    };
-
+function ContactForm() {
     return (
-        <form className="contact-form" onSubmit={handleSubmit}>
+        /* 🚀 We use the Formspree link in the 'action' attribute */
+        <form
+            className="contact-form"
+            action="https://formspree.io/f/xnjorzae"
+            method="POST"
+        >
             <h2>Send a Message</h2>
 
-            <input
-                type="text"
-                placeholder="Name"
-                value={formData.name}
-                /* 🚀 Best Practice: ...prev ensures other fields aren't deleted */
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                required
-            />
+            <div className="input-group">
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Your Name"
+                    required
+                />
+            </div>
 
-            <input
-                type="email"
-                placeholder="Your Email"
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                required
-            />
+            <div className="input-group">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Your Email"
+                    required
+                />
+            </div>
 
-            <textarea
-                placeholder="Message"
-                value={formData.text}
-                onChange={(e) => setFormData(prev => ({ ...prev, text: e.target.value }))}
-                required
-            />
+            <div className="input-group">
+                <textarea
+                    name="message"
+                    placeholder="How can I help you?"
+                    required
+                ></textarea>
+            </div>
+
+            {/* 🛡️ This hidden input prevents spam bots from filling your form */}
+            <input type="hidden" name="_subject" value="New Message from Portfolio!" />
 
             <button type="submit">Send Message</button>
         </form>

@@ -13,32 +13,44 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("Dashboard");
 
-  // --- 2. ADMIN STATE (Persistent) ---
+  // --- 2. ADMIN STATE ---
   const [isAdmin, setIsAdmin] = useState(() => {
     return localStorage.getItem('is-ashu-admin') === 'true';
   });
 
-  // --- 3. PROJECTS STATE (Persistent) ---
+  // --- 3. PROJECTS STATE (Hardcoded for Visitors) ---
   const [projects, setProjects] = useState(() => {
     const saved = localStorage.getItem('my-dashboard-projects');
-    return saved ? JSON.parse(saved) : [{
-      id: 1,
-      title: "Market Expense Tracker",
-      description: "A MERN stack app.",
-      tech: ["React", "Node.js"],
-      image: "https://via.placeholder.com/300x150",
-      liveLink: "#",
-      repoLink: "#"
-    }];
+    // 🚀 Showing your real B.Tech and MERN projects by default
+    return saved ? JSON.parse(saved) : [
+      {
+        id: 1,
+        title: "Solar Powered Garbage Collector",
+        description: "An automated robot designed for waste management using Arduino and solar energy.",
+        tech: ["Arduino", "C++", "Solar Tech"],
+        image: "https://via.placeholder.com/300x150",
+        liveLink: "#",
+        repoLink: "#"
+      },
+      {
+        id: 2,
+        title: "Market Expense Tracker",
+        description: "A full-stack tracking application to manage and split group expenses efficiently.",
+        tech: ["React", "JavaScript", "LocalStorage"],
+        image: "https://via.placeholder.com/300x150",
+        liveLink: "#",
+        repoLink: "#"
+      }
+    ];
   });
 
-  // --- 4. MESSAGES STATE (Persistent) ---
+  // --- 4. MESSAGES STATE ---
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem('portfolio-messages');
     return saved ? JSON.parse(saved) : [];
   });
 
-  // --- 5. PERSISTENCE LAYER (Syncing to LocalStorage) ---
+  // --- 5. PERSISTENCE ---
   useEffect(() => {
     localStorage.setItem('my-dashboard-projects', JSON.stringify(projects));
   }, [projects]);
@@ -49,7 +61,6 @@ function App() {
 
   // --- 6. ACTION HANDLERS ---
 
-  // 🔐 Admin Unlock Logic
   const handleAdminUnlock = () => {
     if (isAdmin) {
       setIsAdmin(false);
@@ -67,28 +78,8 @@ function App() {
     }
   };
 
-  // 📂 Project Handlers
   const addProject = (newProj) => setProjects((prev) => [newProj, ...prev]);
   const deleteProject = (id) => setProjects((prev) => prev.filter((p) => p.id !== id));
-
-  // 📩 Message Handlers
-  const handleSendMessage = (msgData) => {
-    const newMsg = {
-      ...msgData,
-      id: Date.now(),
-      date: new Date().toLocaleString(),
-      reply: ""
-    };
-    setMessages((prev) => [newMsg, ...prev]);
-    alert("Message sent successfully!");
-  };
-
-  const handleAdminReply = (id, replyText) => {
-    setMessages((prev) =>
-      prev.map(m => m.id === id ? { ...m, reply: replyText } : m)
-    );
-    alert("Reply saved!");
-  };
 
   // 🔍 Search Logic
   const filteredProjects = projects.filter((proj) =>
@@ -97,7 +88,6 @@ function App() {
 
   return (
     <div className={`dashboard-container ${darkMode ? 'dark-theme' : ''}`}>
-      {/* SIDEBAR */}
       <Sidebar
         setActiveTab={setActiveTab}
         activeTab={activeTab}
@@ -105,7 +95,6 @@ function App() {
         onUnlock={handleAdminUnlock}
       />
 
-      {/* MAIN CONTENT */}
       <main className="content">
         <header className="content-header">
           <h1>{activeTab}</h1>
@@ -155,12 +144,14 @@ function App() {
         {/* --- TAB: CONTACT & INBOX --- */}
         {activeTab === "Contact" && (
           <div className="contact-page">
-            <ContactForm onSendMessage={handleSendMessage} />
-            {isAdmin && (
+            {/* 🚀 ContactForm now handles its own logic via Formspree link */}
+            <ContactForm />
+
+            {isAdmin && messages.length > 0 && (
               <div className="admin-inbox-section">
                 <hr style={{ margin: '40px 0', opacity: '0.1' }} />
-                <h3 style={{ marginBottom: '20px' }}>Admin Inbox</h3>
-                <MessageList messages={messages} onReply={handleAdminReply} />
+                <h3 style={{ marginBottom: '20px' }}>Local History (Admin Only)</h3>
+                <MessageList messages={messages} />
               </div>
             )}
           </div>
