@@ -95,7 +95,7 @@ function App() {
   const handleUpdateProfile = () => {
     const cv = prompt("Enter CV Drive Link:", profileData.cvLink);
     const li = prompt("Enter LinkedIn URL:", profileData.linkedin);
-    const fb = prompt("Enter Instagram URL:", profileData.instagram);
+    const ig = prompt("Enter Instagram URL:", profileData.instagram);
     const gh = prompt("Enter GitHub URL:", profileData.github);
 
     if (cv && li && ig && gh) {
