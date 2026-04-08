@@ -449,7 +449,7 @@ body {
     width: 100%;
     height: auto;
     padding: 10px 5px;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     position: sticky;
@@ -459,14 +459,15 @@ body {
   }
 
   .sidebar h2 {
-    display: none;
+    display: block !important;
   }
 
   /* Saves space */
 
   .sidebar ul {
     display: flex;
-    gap: 5px;
+    gap: 8px;
+    flex-wrap: wrap;
     justify-content: center;
     width: 100%;
   }
