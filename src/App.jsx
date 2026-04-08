@@ -24,8 +24,8 @@ function App() {
     return saved ? JSON.parse(saved) : {
       cvLink: "#",
       linkedin: "https://linkedin.com/in/ashrafali",
-      facebook: "https://facebook.com/ErAshuGaming",
-      github: "https://github.com/ashrafali"
+      instagram: "https://instagram.com/er_ashuuu",
+      github: "https://github.com/ashusidd"
     };
   });
 
@@ -95,10 +95,17 @@ function App() {
   const handleUpdateProfile = () => {
     const cv = prompt("Enter CV Drive Link:", profileData.cvLink);
     const li = prompt("Enter LinkedIn URL:", profileData.linkedin);
-    const fb = prompt("Enter Facebook URL:", profileData.facebook);
+    const fb = prompt("Enter Instagram URL:", profileData.instagram);
+    const gh = prompt("Enter GitHub URL:", profileData.github); // 🚀 Added this line
 
-    if (cv && li && fb) {
-      setProfileData({ ...profileData, cvLink: cv, linkedin: li, facebook: fb });
+    if (cv && li && fb && gh) {
+      setProfileData({
+        ...profileData,
+        cvLink: cv,
+        linkedin: li,
+        instagram: ig,
+        github: gh // 🚀 Added this line
+      });
       alert("Profile links updated!");
     }
   };
@@ -158,7 +165,7 @@ function App() {
                   </a>
                   <div className="social-group">
                     <a href={profileData.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-                    <a href={profileData.facebook} target="_blank" rel="noreferrer">Facebook</a>
+                    <a href={profileData.instagram} target="_blank" rel="noreferrer">Instagram</a>
                     <a href={profileData.github} target="_blank" rel="noreferrer">GitHub</a>
                   </div>
                 </div>
