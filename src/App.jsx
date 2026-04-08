@@ -18,17 +18,27 @@ function App() {
     return localStorage.getItem('is-ashu-admin') === 'true';
   });
 
-  // --- 3. PROJECTS STATE (Hardcoded for Visitors) ---
+  // --- 3. PROFILE DATA (CV & Socials) ---
+  const [profileData, setProfileData] = useState(() => {
+    const saved = localStorage.getItem('ashu-profile-data');
+    return saved ? JSON.parse(saved) : {
+      cvLink: "#",
+      linkedin: "https://linkedin.com/in/ashrafali",
+      facebook: "https://facebook.com/ErAshuGaming",
+      github: "https://github.com/ashrafali"
+    };
+  });
+
+  // --- 4. PROJECTS STATE ---
   const [projects, setProjects] = useState(() => {
     const saved = localStorage.getItem('my-dashboard-projects');
-    // 🚀 Showing your real B.Tech and MERN projects by default
     return saved ? JSON.parse(saved) : [
       {
         id: 1,
         title: "Solar Powered Garbage Collector",
         description: "An automated robot designed for waste management using Arduino and solar energy.",
         tech: ["Arduino", "C++", "Solar Tech"],
-        image: "https://via.placeholder.com/300x150",
+        image: "/images/garbage-bot.jpg",
         liveLink: "#",
         repoLink: "#"
       },
@@ -37,14 +47,13 @@ function App() {
         title: "Market Expense Tracker",
         description: "A full-stack tracking application to manage and split group expenses efficiently.",
         tech: ["React", "JavaScript", "LocalStorage"],
-        image: "https://via.placeholder.com/300x150",
+        image: "/images/expense-app.png",
         liveLink: "#",
         repoLink: "#"
       }
     ];
   });
 
-  // --- 4. MESSAGES STATE ---
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem('portfolio-messages');
     return saved ? JSON.parse(saved) : [];
@@ -58,6 +67,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('portfolio-messages', JSON.stringify(messages));
   }, [messages]);
+
+  useEffect(() => {
+    localStorage.setItem('ashu-profile-data', JSON.stringify(profileData));
+  }, [profileData]);
 
   // --- 6. ACTION HANDLERS ---
 
@@ -78,10 +91,21 @@ function App() {
     }
   };
 
+  // 🛠️ Admin function to update CV and Socials
+  const handleUpdateProfile = () => {
+    const cv = prompt("Enter CV Drive Link:", profileData.cvLink);
+    const li = prompt("Enter LinkedIn URL:", profileData.linkedin);
+    const fb = prompt("Enter Facebook URL:", profileData.facebook);
+
+    if (cv && li && fb) {
+      setProfileData({ ...profileData, cvLink: cv, linkedin: li, facebook: fb });
+      alert("Profile links updated!");
+    }
+  };
+
   const addProject = (newProj) => setProjects((prev) => [newProj, ...prev]);
   const deleteProject = (id) => setProjects((prev) => prev.filter((p) => p.id !== id));
 
-  // 🔍 Search Logic
   const filteredProjects = projects.filter((proj) =>
     proj.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -117,47 +141,63 @@ function App() {
 
         {/* --- TAB: DASHBOARD --- */}
         {activeTab === "Dashboard" && (
-          <section className="stats-row">
-            <StatCard label="Total Projects" value={projects.length} iconColor="#4f46e5" />
-            <StatCard label="Inbox Messages" value={messages.length} iconColor="#10b981" />
-            <StatCard label="Role" value={isAdmin ? "Admin" : "Visitor"} iconColor="#f59e0b" />
-          </section>
+          <div className="dashboard-view">
+            <section className="stats-row">
+              <StatCard label="Total Projects" value={projects.length} iconColor="#4f46e5" />
+              <StatCard label="Inbox Messages" value={messages.length} iconColor="#10b981" />
+              <StatCard label="Role" value={isAdmin ? "Admin" : "Visitor"} iconColor="#f59e0b" />
+            </section>
+
+            {/* CV & SOCIALS SECTION */}
+            <div className="profile-card card glass-card">
+              <h3>Connect & Resume</h3>
+              <div className="profile-actions">
+                <div className="visitor-links">
+                  <a href={profileData.cvLink} target="_blank" rel="noreferrer" className="cv-btn">
+                    📥 Download CV
+                  </a>
+                  <div className="social-group">
+                    <a href={profileData.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+                    <a href={profileData.facebook} target="_blank" rel="noreferrer">Facebook</a>
+                    <a href={profileData.github} target="_blank" rel="noreferrer">GitHub</a>
+                  </div>
+                </div>
+
+                {isAdmin && (
+                  <button onClick={handleUpdateProfile} className="admin-edit-btn">
+                    ⚙️ Edit Links
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         )}
 
-        {/* --- TAB: PROJECTS --- */}
+        {/* --- OTHER TABS REMAIN THE SAME --- */}
         {activeTab === "Projects" && (
           <>
             {isAdmin && <AddProject onAdd={addProject} />}
             <div className="project-grid">
               {filteredProjects.map((proj) => (
-                <ProjectCard
-                  key={proj.id}
-                  {...proj}
-                  onDelete={deleteProject}
-                  isAdmin={isAdmin}
-                />
+                <ProjectCard key={proj.id} {...proj} onDelete={deleteProject} isAdmin={isAdmin} />
               ))}
             </div>
           </>
         )}
 
-        {/* --- TAB: CONTACT & INBOX --- */}
         {activeTab === "Contact" && (
           <div className="contact-page">
-            {/* 🚀 ContactForm now handles its own logic via Formspree link */}
             <ContactForm />
-
             {isAdmin && messages.length > 0 && (
               <div className="admin-inbox-section">
                 <hr style={{ margin: '40px 0', opacity: '0.1' }} />
-                <h3 style={{ marginBottom: '20px' }}>Local History (Admin Only)</h3>
+                <h3>Local History (Admin Only)</h3>
                 <MessageList messages={messages} />
               </div>
             )}
           </div>
         )}
 
-        {/* --- TAB: SKILLS --- */}
         {activeTab === "Skills" && (
           <div className="card glass-card">
             <h3>Technical Skills</h3>
