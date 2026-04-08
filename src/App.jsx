@@ -96,15 +96,15 @@ function App() {
     const cv = prompt("Enter CV Drive Link:", profileData.cvLink);
     const li = prompt("Enter LinkedIn URL:", profileData.linkedin);
     const fb = prompt("Enter Instagram URL:", profileData.instagram);
-    const gh = prompt("Enter GitHub URL:", profileData.github); // 🚀 Added this line
+    const gh = prompt("Enter GitHub URL:", profileData.github);
 
-    if (cv && li && fb && gh) {
+    if (cv && li && ig && gh) {
       setProfileData({
         ...profileData,
         cvLink: cv,
         linkedin: li,
         instagram: ig,
-        github: gh // 🚀 Added this line
+        github: gh
       });
       alert("Profile links updated!");
     }
