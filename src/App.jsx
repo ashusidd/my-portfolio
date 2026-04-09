@@ -18,41 +18,52 @@ function App() {
     return localStorage.getItem('is-ashu-admin') === 'true';
   });
 
-  // --- 3. PROJECTS STATE ---
-  const [projects, setProjects] = useState(() => {
-    const saved = localStorage.getItem('my-dashboard-projects');
-    return saved ? JSON.parse(saved) : [
-      {
-        id: 1,
-        title: "Solar Powered Garbage Collector",
-        description: "An automated robot designed for waste management using Arduino and solar energy.",
-        tech: ["Arduino", "C++", "Solar Tech"],
-        image: "/images/garbage-bot.jpg",
-        liveLink: "#",
-        repoLink: "#"
-      },
-      {
-        id: 2,
-        title: "Market Expense Tracker",
-        description: "A full-stack tracking application to manage and split group expenses efficiently.",
-        tech: ["React", "JavaScript", "LocalStorage"],
-        image: "/images/expense-app.png",
-        liveLink: "#",
-        repoLink: "#"
-      }
-    ];
-  });
+  // --- 3. PROJECTS STATE (Hardcoded) ---
+  const [projects, setProjects] = useState([
+    {
+      id: 1,
+      title: "To do App",
+      description: "A frontend project to add and delete tasks with clean UI.",
+      tech: ["React", "JavaScript", "CSS"],
+      image: "/images/todo.png",
+      liveLink: "https://to-do-app-orcin-omega.vercel.app/",
+      repoLink: "https://github.com/ashusidd/to-do-app"
+    },
+    {
+      id: 2,
+      title: "Counter App",
+      description: "A simple frontend UI counter with increase, decrease and reset buttons.",
+      tech: ["React", "JavaScript"],
+      image: "/images/counterApp.png",
+      liveLink: "https://counter-app-rosy-delta.vercel.app/",
+      repoLink: "https://github.com/ashusidd/counter-app"
+    },
+    {
+      id: 3,
+      title: "Timer",
+      description: "A beautiful neon timer with stop button using time API.",
+      tech: ["React", "JavaScript", "API"],
+      image: "/images/timer.png",
+      liveLink: "https://gamer-timer-theta.vercel.app/",
+      repoLink: "https://github.com/ashusidd/gamer-timer"
+    },
+    {
+      id: 4,
+      title: "Solar Powered Garbage Collector",
+      description: "An automated robot designed for waste management using Arduino and solar energy.",
+      tech: ["Arduino", "C++", "Solar Tech"],
+      image: "/images/garbage-bot.jpg",
+      liveLink: "#",
+      repoLink: "#"
+    }
+  ]);
 
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem('portfolio-messages');
     return saved ? JSON.parse(saved) : [];
   });
 
-  // --- 4. PERSISTENCE (Only for Projects and Messages) ---
-  useEffect(() => {
-    localStorage.setItem('my-dashboard-projects', JSON.stringify(projects));
-  }, [projects]);
-
+  // --- 4. PERSISTENCE (Only for Messages) ---
   useEffect(() => {
     localStorage.setItem('portfolio-messages', JSON.stringify(messages));
   }, [messages]);
@@ -120,27 +131,52 @@ function App() {
               <StatCard label="Role" value={isAdmin ? "Admin" : "Visitor"} iconColor="#f59e0b" />
             </section>
 
-            {/* CV & SOCIALS SECTION - DIRECTLY IN CODE */}
-            <div className="profile-card card glass-card">
-              <h3>Connect & Resume</h3>
-              <div className="profile-actions">
-                <div className="visitor-links">
-                  {/* 🔗 Replace '#' with your Google Drive Link */}
-                  <a href="https://drive.google.com/file/d/1_dkUCa37ck7h4sQ376RK816F10-ZGFvp/view?usp=drive_link" target="_blank" rel="noreferrer" className="cv-btn">
-                    📥 Download CV
-                  </a>
-                  <div className="social-group">
-                    <a href="https://linkedin.com/in/ashrafali" target="_blank" rel="noreferrer">LinkedIn</a>
-                    <a href="https://instagram.com/er_ashuuu" target="_blank" rel="noreferrer">Instagram</a>
-                    <a href="https://github.com/ashusidd" target="_blank" rel="noreferrer">GitHub</a>
+            <div className="dashboard-grid">
+              {/* About Me Card with Public Image */}
+              <div className="about-card card glass-card">
+                <h3>About Me!</h3>
+                <div className="about-header">
+                  {/* 📸 Public folder se image uthane ke liye direct path use karein */}
+                  <img src="/images/ashu.jpg" alt="Ashraf Ali" className="about-pfp" />
+                  <div className="about-title-group">
+                    <h3>Ashraf Ali</h3>
+                    <p className="subtitle">Frontend Developer | React Specialist</p>
+                  </div>
+                </div>
+
+                <p className="about-text">
+                  I am a <strong>B.Tech CSE student</strong> at BBDU with a passion for
+                  Frontend Development.
+                  I have a strong logical foundation with
+                  <strong> 150+ JS Challenges</strong> completed.
+                </p>
+                <div className="highlights-tags">
+                  <span>React Devloper</span>
+                  <span>📢 85k+ Community</span>
+                  <span> BBDU '27</span>
+                </div>
+              </div>
+
+              {/* Profile/Resume Card */}
+              <div className="profile-card card glass-card">
+                <h3>Connect & Resume</h3>
+                <div className="profile-actions">
+                  <div className="visitor-links">
+                    <a href="https://drive.google.com/file/d/1_dkUCa37ck7h4sQ376RK816F10-ZGFvp/view?usp=drive_link" target="_blank" rel="noreferrer" className="cv-btn">
+                      📥 Download CV
+                    </a>
+                    <div className="social-group">
+                      <a href="https://linkedin.com/in/ashrafali" target="_blank" rel="noreferrer">LinkedIn</a>
+                      <a href="https://instagram.com/er_ashuuu" target="_blank" rel="noreferrer">Instagram</a>
+                      <a href="https://github.com/ashusidd" target="_blank" rel="noreferrer">GitHub</a>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         )}
-
-        {/* --- OTHER TABS --- */}
+        {/* --- TAB: PROJECTS --- */}
         {activeTab === "Projects" && (
           <>
             {isAdmin && <AddProject onAdd={addProject} />}
@@ -152,6 +188,7 @@ function App() {
           </>
         )}
 
+        {/* --- TAB: CONTACT --- */}
         {activeTab === "Contact" && (
           <div className="contact-page">
             <ContactForm />
@@ -165,13 +202,14 @@ function App() {
           </div>
         )}
 
+        {/* --- TAB: SKILLS --- */}
         {activeTab === "Skills" && (
           <div className="card glass-card">
             <h3>Technical Skills</h3>
             <p style={{ marginTop: '10px', lineHeight: '1.6' }}>
               <strong>Frontend:</strong> React, JavaScript (ES6+), HTML5, CSS3 <br />
               <strong>Backend:</strong> Node.js, Express, MongoDB <br />
-              <strong>Hardware:</strong> Arduino, C++, Solar Tech
+              <strong>Hardware:</strong> Arduino, Solar Tech
             </p>
           </div>
         )}

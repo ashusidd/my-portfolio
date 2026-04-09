@@ -108,6 +108,44 @@ body {
   }
 }
 
+.about-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.about-pfp {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  /* This is the magic line - it crops the photo instead of stretching it */
+  object-fit: cover;
+  /* This ensures your face stays in the center */
+  object-position: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
+  /* Subtle purple glow */
+  transition: transform 0.3s ease;
+}
+
+.about-pfp:hover {
+  transform: scale(1.1);
+  /* Zooms in slightly when you hover */
+}
+
+.about-title-group h3 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.about-title-group .subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #818cf8;
+  /* Light Indigo color */
+}
+
 /* 5. HEADER & CONTROLS */
 .content-header {
   display: flex;
