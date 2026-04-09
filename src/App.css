@@ -71,6 +71,7 @@ body {
 .menu-item:hover {
   background: #2c2c3d;
   color: white;
+  border-radius: 8px;
 }
 
 .menu-item.active {
@@ -194,6 +195,7 @@ body {
   position: relative;
   transition: 0.3s;
   overflow: hidden;
+  border-bottom: 8px solid #f60596;
 }
 
 .card:hover {
@@ -409,7 +411,7 @@ body {
 
 /* 9. DARK THEME RULES */
 .dark-theme .content {
-  background-color: #0f172a;
+  background-color: #112f74;
   color: white;
 }
 
