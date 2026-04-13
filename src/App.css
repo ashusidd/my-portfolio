@@ -1,3 +1,28 @@
+/* --- NEW: BACKGROUND & PARTICLES FIX --- */
+#tsparticles {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  /* Background ke piche */
+}
+
+/* Puri body aur container ko transparent karna zaroori hai */
+html,
+body,
+.dashboard-container,
+.content {
+  background-color: transparent !important;
+}
+
+:root {
+  /* Tumhare purane variables ke saath ye glass variables jodo */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
 /* 1. RESET & VARIABLES */
 :root {
   --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
@@ -204,6 +229,7 @@ body {
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   border-left: 10px solid #f60596;
+
 }
 
 .stat-label {
@@ -343,9 +369,10 @@ body {
   backdrop-filter: blur(15px) saturate(180%);
   padding: 45px;
   border-radius: 28px;
-  border: 1px solid var(--glass-border);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
   margin: 20px 0 40px 0;
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid var(--glass-border) !important;
 }
 
 .contact-form h2,
@@ -449,7 +476,7 @@ body {
 
 /* 9. DARK THEME RULES */
 .dark-theme .content {
-  background-color: #112f74;
+  background-color: #062d87;
   color: white;
 }
 
@@ -461,6 +488,8 @@ body {
   background-color: #1e293b;
   color: white;
   border-color: #334155;
+
+
 }
 
 .dark-theme .contact-form input,
@@ -542,35 +571,6 @@ body {
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
-}
-
-/* 🌑 DARK MODE SPECIFIC TWEAKS */
-.dark-theme .social-group a {
-  color: #a5b4fc;
-  /* Light Indigo - very clear on dark backgrounds */
-  background: rgba(255, 255, 255, 0.05);
-  /* Subtle box so it looks like a button */
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(165, 180, 252, 0.2);
-  /* Soft border */
-}
-
-.dark-theme .social-group a:hover {
-  background: rgba(165, 180, 252, 0.15);
-  color: #ffffff;
-  border-color: #a5b4fc;
-}
-
-.dark-theme .admin-edit-btn {
-  color: #a5b4fc;
-  border-color: #a5b4fc;
-}
-
-/* Make the Download CV button extra bright in Dark Mode */
-.dark-theme .cv-btn {
-  background: #6366f1;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
 }
 
 /* 10. RESPONSIVE MOBILE - REWRITTEN FOR ASHU */

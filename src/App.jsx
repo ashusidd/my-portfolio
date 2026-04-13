@@ -1,4 +1,8 @@
 import { useState, useEffect } from 'react';
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { motion, AnimatePresence } from "framer-motion";
+
 import Sidebar from './components/Sidebar';
 import ProjectCard from './components/ProjectCard';
 import StatCard from './components/StatCard';
@@ -8,17 +12,32 @@ import MessageList from './components/MessageList';
 import './App.css';
 
 function App() {
-  // --- 1. UI STATE ---
-  const [darkMode, setDarkMode] = useState(false);
+  const [init, setInit] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("Dashboard");
 
-  // --- 2. ADMIN STATE ---
+  // --- 1. PERSISTENT DARK MODE LOGIC ---
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('portfolio-theme');
+    return savedTheme === 'dark' ? true : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('portfolio-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
+  // Particles Initialize
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => setInit(true));
+  }, []);
+
+  // --- 2. ADMIN & DATA STATE ---
   const [isAdmin, setIsAdmin] = useState(() => {
     return localStorage.getItem('is-ashu-admin') === 'true';
   });
 
-  // --- 3. PROJECTS STATE (Hardcoded) ---
   const [projects, setProjects] = useState([
     {
       id: 1,
@@ -63,12 +82,11 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // --- 4. PERSISTENCE (Only for Messages) ---
   useEffect(() => {
     localStorage.setItem('portfolio-messages', JSON.stringify(messages));
   }, [messages]);
 
-  // --- 5. ACTION HANDLERS ---
+  // --- 3. ACTION HANDLERS ---
   const handleAdminUnlock = () => {
     if (isAdmin) {
       setIsAdmin(false);
@@ -93,8 +111,53 @@ function App() {
     proj.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // --- 4. IMPROVED PARTICLE OPTIONS ---
+  const particleOptions = {
+    background: {
+      color: {
+        // 🔥 Ye line background ko kaala karegi dark mode mein
+        value: darkMode ? "#053277" : "#e1dcdc",
+      },
+    },
+    fpsLimit: 120,
+    particles: {
+      color: {
+        value: darkMode ? "#ffffff" : "#4f46e5",
+      },
+      links: {
+        enable: true,
+        color: darkMode ? "#ffffff" : "#4f46e5",
+        distance: 150,
+        opacity: 0.3,
+      },
+      move: {
+        enable: true,
+        speed: 1.5,
+        direction: "none",
+        outModes: { default: "out" },
+      },
+      number: {
+        value: 80,
+        density: { enable: true, area: 800 },
+      },
+      opacity: {
+        value: 0.5,
+      },
+      shape: {
+        type: "circle",
+      },
+      size: {
+        value: { min: 1, max: 3 },
+      },
+    },
+    detectRetina: true,
+  };
+
   return (
     <div className={`dashboard-container ${darkMode ? 'dark-theme' : ''}`}>
+      {/* Background Particles */}
+      {init && <Particles id="tsparticles" options={particleOptions} />}
+
       <Sidebar
         setActiveTab={setActiveTab}
         activeTab={activeTab}
@@ -102,8 +165,8 @@ function App() {
         onUnlock={handleAdminUnlock}
       />
 
-      <main className="content">
-        <header className="content-header">
+      <main className="content" style={{ position: 'relative', zIndex: 1 }}>
+        <header className="content-header glass-card">
           <h1>{activeTab}</h1>
           <div className="header-controls">
             <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
@@ -122,97 +185,103 @@ function App() {
           </div>
         </header>
 
-        {/* --- TAB: DASHBOARD --- */}
-        {activeTab === "Dashboard" && (
-          <div className="dashboard-view">
-            <section className="stats-row">
-              <StatCard label="Total Projects" value={projects.length} iconColor="#4f46e5" />
-              <StatCard label="Inbox Messages" value={messages.length} iconColor="#10b981" />
-              <StatCard label="Role" value={isAdmin ? "Admin" : "Visitor"} iconColor="#f59e0b" />
-            </section>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeTab === "Dashboard" && (
+              <div className="dashboard-view">
+                <section className="stats-row">
+                  <StatCard label="Total Projects" value={projects.length} iconColor="#4f46e5" />
+                  <StatCard label="Inbox Messages" value={messages.length} iconColor="#10b981" />
+                  <StatCard label="Role" value={isAdmin ? "Admin" : "Visitor"} iconColor="#f59e0b" />
+                </section>
 
-            <div className="dashboard-grid">
-              {/* About Me Card with Public Image */}
-              <div className="about-card card glass-card">
-                <h3>About Me!</h3>
-                <div className="about-header">
-                  {/* 📸 Public folder se image uthane ke liye direct path use karein */}
-                  <img src="/images/ashu.jpg" alt="Ashraf Ali" className="about-pfp" />
-                  <div className="about-title-group">
-                    <h3>Ashraf Ali</h3>
-                    <p className="subtitle">Frontend Developer | React Specialist</p>
+                <div className="dashboard-grid">
+                  <div className="about-card card glass-card">
+                    <h3>About Me!</h3>
+                    <div className="about-header">
+                      <img src="/images/ashu.jpg" alt="Ashraf Ali" className="about-pfp" />
+                      <div className="about-title-group">
+                        <h3>Ashraf Ali</h3>
+                        <p className="subtitle">Frontend Developer | React Specialist</p>
+                      </div>
+                    </div>
+                    <p className="about-text">
+                      I am a <strong>B.Tech CSE student</strong> at BBDU with a passion for
+                      Frontend Development and <strong>150+ JS Challenges</strong> completed.
+                    </p>
+                    <div className="highlights-tags">
+                      <span>React Developer</span>
+                      <span>📢 85k+ Community</span>
+                      <span>BBDU '27</span>
+                    </div>
                   </div>
-                </div>
 
-                <p className="about-text">
-                  I am a <strong>B.Tech CSE student</strong> at BBDU with a passion for
-                  Frontend Development.
-                  I have a strong logical foundation with
-                  <strong> 150+ JS Challenges</strong> completed.
-                </p>
-                <div className="highlights-tags">
-                  <span>React Devloper</span>
-                  <span>📢 85k+ Community</span>
-                  <span> BBDU '27</span>
-                </div>
-              </div>
-
-              {/* Profile/Resume Card */}
-              <div className="profile-card card glass-card">
-                <h3>Connect & Resume</h3>
-                <div className="profile-actions">
-                  <div className="visitor-links">
-                    <a href="https://drive.google.com/file/d/1_dkUCa37ck7h4sQ376RK816F10-ZGFvp/view?usp=drive_link" target="_blank" rel="noreferrer" className="cv-btn">
-                      📥 Download CV
-                    </a>
-                    <div className="social-group">
-                      <a href="https://linkedin.com/in/ashrafali" target="_blank" rel="noreferrer">LinkedIn</a>
-                      <a href="https://instagram.com/er_ashuuu" target="_blank" rel="noreferrer">Instagram</a>
-                      <a href="https://github.com/ashusidd" target="_blank" rel="noreferrer">GitHub</a>
+                  <div className="profile-card card glass-card">
+                    <h3>Connect & Resume</h3>
+                    <div className="profile-actions">
+                      <div className="visitor-links">
+                        <a href="https://drive.google.com/..." target="_blank" className="cv-btn">📥 Download CV</a>
+                        <div className="social-group">
+                          <a href="https://linkedin.com/in/ashrafali" target="_blank">LinkedIn</a>
+                          <a href="https://instagram.com/er_ashuuu" target="_blank">Instagram</a>
+                          <a href="https://github.com/ashusidd" target="_blank">GitHub</a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-        {/* --- TAB: PROJECTS --- */}
-        {activeTab === "Projects" && (
-          <>
-            {isAdmin && <AddProject onAdd={addProject} />}
-            <div className="project-grid">
-              {filteredProjects.map((proj) => (
-                <ProjectCard key={proj.id} {...proj} onDelete={deleteProject} isAdmin={isAdmin} />
-              ))}
-            </div>
-          </>
-        )}
+            )}
 
-        {/* --- TAB: CONTACT --- */}
-        {activeTab === "Contact" && (
-          <div className="contact-page">
-            <ContactForm />
-            {isAdmin && messages.length > 0 && (
-              <div className="admin-inbox-section">
-                <hr style={{ margin: '40px 0', opacity: '0.1' }} />
-                <h3>Local History (Admin Only)</h3>
-                <MessageList messages={messages} />
+            {activeTab === "Projects" && (
+              <>
+                {isAdmin && <AddProject onAdd={addProject} />}
+                <div className="project-grid">
+                  {filteredProjects.map((proj, index) => (
+                    <motion.div
+                      key={proj.id}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <ProjectCard {...proj} onDelete={deleteProject} isAdmin={isAdmin} />
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {activeTab === "Contact" && (
+              <div className="contact-page">
+                <ContactForm />
+                {isAdmin && messages.length > 0 && (
+                  <div className="admin-inbox-section">
+                    <hr style={{ margin: '40px 0', opacity: '0.1' }} />
+                    <h3>Local History (Admin Only)</h3>
+                    <MessageList messages={messages} />
+                  </div>
+                )}
               </div>
             )}
-          </div>
-        )}
 
-        {/* --- TAB: SKILLS --- */}
-        {activeTab === "Skills" && (
-          <div className="card glass-card">
-            <h3>Technical Skills</h3>
-            <p style={{ marginTop: '10px', lineHeight: '1.6' }}>
-              <strong>Frontend:</strong> React, JavaScript (ES6+), HTML5, CSS3 <br />
-              <strong>Backend:</strong> Node.js, Express, MongoDB <br />
-              <strong>Hardware:</strong> Arduino, Solar Tech
-            </p>
-          </div>
-        )}
+            {activeTab === "Skills" && (
+              <div className="card glass-card">
+                <h3>Technical Skills</h3>
+                <p style={{ marginTop: '10px', lineHeight: '1.6' }}>
+                  <strong>Frontend:</strong> React, JavaScript (ES6+), HTML5, CSS3 <br />
+                  <strong>Backend:</strong> Node.js, Express, MongoDB <br />
+                  <strong>Hardware:</strong> Arduino, Solar Tech
+                </p>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </main>
     </div>
   );
