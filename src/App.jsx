@@ -71,7 +71,7 @@ function App() {
       title: "Food Delivery App",
       description: "A local food delivery responsive app where you order food",
       tech: ["react", "javascript"],
-      image: "\images\food delivery.png",
+      image: "/images/food delivery.png",
       liveLink: "https://food-delivery-amber-psi.vercel.app/",
       repoLink: "https://github.com/ashusidd/food-delivery"
 
