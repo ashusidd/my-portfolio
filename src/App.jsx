@@ -238,7 +238,7 @@ function App() {
                       <div className="visitor-links">
                         <a href="https://drive.google.com/..." target="_blank" className="cv-btn">📥 Download CV</a>
                         <div className="social-group">
-                          <a href="https://linkedin.com/in/ashrafali" target="_blank">LinkedIn</a>
+                          <a href="https://www.linkedin.com/in/ashraf-ali-sheikh-b23451295/" target="_blank">LinkedIn</a>
                           <a href="https://instagram.com/er_ashuuu" target="_blank">Instagram</a>
                           <a href="https://github.com/ashusidd" target="_blank">GitHub</a>
                         </div>
