@@ -78,6 +78,15 @@ function App() {
     },
     {
       id: 5,
+      title: "My Store",
+      description: "A store where add product and delete product",
+      tech: ["react", "tailwind css"],
+      image: "/images/myStore.png",
+      liveLink: "https://my-store-six-chi.vercel.app/",
+      repoLink: "https://github.com/ashusidd/my-store"
+    },
+    {
+      id: 6,
       title: "Solar Powered Garbage Collector",
       description: "An automated robot designed for waste management using Arduino and solar energy.",
       tech: ["Arduino", "C++", "Solar Tech"],
