@@ -87,6 +87,15 @@ function App() {
     },
     {
       id: 6,
+      title: "Furniture Store",
+      description: "A fullstack Furniture store created with react js,firebase,claudary and tailwind css",
+      tech: ["react", "firebase", "tailwind css"],
+      image: "/images/furnitureStore.png",
+      liveLink: "https://ashufurniture-store.vercel.app/",
+      repoLink: "https://github.com/ashusidd/furniture-store"
+    },
+    {
+      id: 7,
       title: "Solar Powered Garbage Collector",
       description: "An automated robot designed for waste management using Arduino and solar energy.",
       tech: ["Arduino", "C++", "Solar Tech"],
