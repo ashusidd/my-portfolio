@@ -96,6 +96,15 @@ function App() {
     },
     {
       id: 7,
+      title: "Expenses Tracker",
+      description: "A responsive expenses tracker app with localStorage",
+      tech: ["react", "tailwind css"],
+      image: "images/expensesTracker.png",
+      liveLink: "https://expenses-tracker-green-mu.vercel.app/",
+      repoLink: "https://github.com/ashusidd/expenses-tracker"
+    },
+    {
+      id: 8,
       title: "Solar Powered Garbage Collector",
       description: "An automated robot designed for waste management using Arduino and solar energy.",
       tech: ["Arduino", "C++", "Solar Tech"],
